@@ -1,7 +1,7 @@
 # opens up the raw data file
 with open ('ks.csv', 'r') as in_file:
     records = in_file.readlines() # loads all records into a list split by new lines (currently strings)
-    
+    count = 0
     with open('clean_ks.csv', 'w+') as out_file: # opening an out file
         for i in range(len(records)): # loads through each record
             records[i] = records[i].split(',') # seperates the list by ,
@@ -15,13 +15,12 @@ with open ('ks.csv', 'r') as in_file:
             while len(records[i]) != len(records[0]): # checks if it is the proper size
                 records[i][1] += " " + records[i][2]  # if its not appends the split tittle
                 del records[i][2] # deletes the other (shifts everything back)
-            
+                count += 1
+
             for h in range(len(records[i])): # goes through the entire record
                 if h != 0: # skips the first so it doesn't add a first ','
                     out_file.write(',')
                 out_file.write(records[i][h]) # writes out the actual record 
             out_file.write("\n") # adds a \n to denote a new record
     
-        
-
-              
+print(count)
