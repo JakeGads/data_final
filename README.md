@@ -1,2 +1,4 @@
-# data_final
-This semester I am taking 3 data heavy classes, each of these classes require us to find our own data set which I found on kaggle
+# Data Final
+
+This semester I am taking 3 data heavy classes, each of these classes require us to find our own data set which I found on [kaggle](https://www.kaggle.com/kemical/kickstarter-projects)
+
