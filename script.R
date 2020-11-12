@@ -54,18 +54,21 @@ mutate(success=usd_pledged_real - usd_goal_real)
 #region regression image generators
 dir.create("regresion_imgs")
 
-count = 0
+count = 0 
 for(i in colnames(df)){
     file_name <- paste('regresion_imgs/', 0, count, '_', i, sep='')
     if (count > 9) {file_name <- paste('regresion_imgs/', count, '_', i, sep='')}
     print(file_name)
     count = count + 1
-    graph <- gen_regression(df, i)
-    write_graph(file_name, graph, svg_gen)
+    write_graph(file_name, gen_regression(df, i), svg_gen)
 }
 #endregion
 
 # Jake
 ## After examing all the generated regressions it quickly struck me that a lot of these projects did successed which I felt was shocking at this point I wanted to by how much did they successed by
 
-# We that making a scatterplot and 
+# We can edit success variable, and testing that over categorical data
+df <- df %>%
+mutate(success=usd_pledged_real / usd_goal_real)
+
+categorical <- c(2,3,4,5,6)
