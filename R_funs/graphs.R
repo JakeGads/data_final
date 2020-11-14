@@ -29,8 +29,7 @@ gen_cat_scatter <- function(df, col){
 
 gen_cat_scatter_facet <- function(df, col){
     gen_cat_scatter() +
-    
-
+    facet_wrap(reformulate(col))
 }
 
 write_graph <- function(file_name, graph, web_image){

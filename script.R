@@ -1,5 +1,5 @@
 # denotes weither or not you want to generate svg images (note it is a timely process)
-svg_gen = F
+svg_gen = T
 
 #region smart loaders to load or download scripts
 smart_package_loader <- function(package, repo="http://cran.rstudio.com"){
@@ -52,7 +52,7 @@ mutate(success=usd_pledged_real - usd_goal_real)
 ez_graph("_regresion_imgs", df, gen_regression, svg_gen)
 #endregion
 
-# region catagiorical scatter
+#region catagiorical scatter
 # Jake
 ## After examing all the generated regressions it quickly struck me that a lot of these projects did successed which I felt was shocking at this point I wanted to by how much did they successed by
 
@@ -61,5 +61,9 @@ df_slim <- df %>%
 mutate(success=usd_pledged_real / usd_goal_real) %>%
 select(category, main_category, currency, deadline, state, country, success)
 
-ez_graph("_categorical_scatter_plots", df_slim, gen_cat_scatter, T)
-# endregion
+ez_graph("_categorical_scatter_plots", df_slim, gen_cat_scatter, svg_gen)
+#endregion
+
+#region can facet them 
+ez_graph("_categorical_scatter_plots_faceted", df_slim, gen_cat_scatter, svg_gen)
+#endregion
