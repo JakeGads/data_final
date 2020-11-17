@@ -28,8 +28,9 @@ gen_cat_scatter <- function(df, col){
 }
 
 gen_cat_scatter_facet <- function(df, col){
-    gen_cat_scatter() +
-    facet_wrap(reformulate(col))
+    ggplot(df, mapping=aes_string(x="success", y=col)) +
+    geom_point() + 
+    facet_wrap(as.formula(paste("~", col)))
 }
 
 write_graph <- function(file_name, graph, web_image){

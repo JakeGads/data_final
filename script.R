@@ -1,7 +1,8 @@
 # denotes weither or not you want to generate svg images (note it is a timely process)
-svg_gen = T
+svg_gen = F
 
 #region smart loaders to load or download scripts
+
 smart_package_loader <- function(package, repo="http://cran.rstudio.com"){
     tryCatch({
         library(package, character.only=TRUE)
@@ -18,7 +19,7 @@ smart_package_loader <- function(package, repo="http://cran.rstudio.com"){
 smart_script_loader <- function(location, repo){
     tryCatch({
             source(location)
-        }, warning = function(e) {
+        }, wSarning = function(e) {
             print(paste("Downloading ", location, sep= ""))
             source_url(paste(repo, location, sep=""))
         }, error = function(e) {
@@ -35,7 +36,7 @@ for (i in c("R_funs/graphs.R", "R_funs/smart_data.R")){
 }
 #endregion
 
-#region Column Information for generating graphs
+#region Column Information for generating graphs, placed here so VS-code can vibe
 '
  [1] "ID"               "name"             "category"         "main_category"   
  [5] "currency"         "deadline"         "goal"             "launched"        
