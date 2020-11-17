@@ -1,5 +1,6 @@
+#region works
 # denotes weither or not you want to generate svg images (note it is a timely process)
-svg_gen = F
+svg_gen = TRUE
 
 #region smart loaders to load or download scripts
 
@@ -48,10 +49,14 @@ for (i in c("R_funs/graphs.R", "R_funs/smart_data.R")){
 #region configuring the dataframe for regression
 df <- get_data("clean_ks.csv") 
 df <- df %>%
+mutate(usd_pledged_real = usd_pledged_real / 100000) %>%
+mutate(usd_goal_real = usd_goal_real / 100000) %>%
 mutate(success=usd_pledged_real - usd_goal_real)
 
 ez_graph("_regresion_imgs", df, gen_regression, svg_gen)
 #endregion
+#endregion
+
 
 #region catagiorical scatter
 # Jake
@@ -59,12 +64,28 @@ ez_graph("_regresion_imgs", df, gen_regression, svg_gen)
 
 # We can edit success variable, and testing that over categorical data
 df_slim <- df %>%
-mutate(success=usd_pledged_real / usd_goal_real) %>%
-select(category, main_category, currency, deadline, state, country, success)
+mutate(success_rating=usd_pledged_real / usd_goal_real) %>% select(usd_pledged_real, usd_goal_real, category, main_category, currency, deadline, state, country, success_rating)
+colnames(df_slim)
 
-ez_graph("_categorical_scatter_plots", df_slim, gen_cat_scatter, svg_gen)
+
+ez_graph("_categorical_scatter_plots", df_slim, gen_cat_scatter, svg_gen, "success_rating")
 #endregion
 
 #region can facet them 
-ez_graph("_categorical_scatter_plots_faceted", df_slim, gen_cat_scatter, svg_gen)
+
+loc <- "_facet_cat_scatter"
+dir.create(loc)
+count = 0 
+for(i in colnames(df)){
+    file_name <- paste(loc, '/', 0, count, '_', i, sep='')
+    if (count > 9) {file_name <- paste(loc, '/', count, '_', i, sep='')}
+    print(file_name)
+    count = count + 1
+    tryCatch({
+        write_graph(file_name, gen_cat_scatter_facet(df_slim, "usd_pledged_real", "usd_goal_real", i), svg)
+    }, error = function(e) {
+        print(paste("failed", file_name, sep = " "))
+    })
+}
+
 #endregion
