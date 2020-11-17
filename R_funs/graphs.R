@@ -30,11 +30,15 @@ gen_cat_scatter <- function(df, col, x="success"){
 gen_cat_scatter_facet <- function(df, y, x, wrapped){
     ggplot(df, mapping=aes_string(x=x, y=y)) +
     geom_point() + 
+    geom_abline(intercept = 0, slope=1) + 
     facet_wrap(as.formula(paste("~", wrapped)))
 }
 
 write_graph <- function(file_name, graph, web_image){
-    if(!file.exists(paste(file_name, '.png',sep = ""))){
+    
+    pop <- !file.exists(paste(file_name, '.png',sep = ""))
+
+    if(pop){
         png(paste(file_name, '.png', sep=''))
         print(graph)
         dev.off()
@@ -42,7 +46,7 @@ write_graph <- function(file_name, graph, web_image){
     else {
        print("  Already Generated PNG, to regen please clear data")
     }
-    if(web_image && !file.exists(paste(file_name, '.svg',sep = ""))){
+    if(web_image & pop){
         svg(paste(file_name, '.svg', sep=''))
         print(graph)
         dev.off()
