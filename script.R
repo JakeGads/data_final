@@ -91,3 +91,7 @@ for(i in colnames(df_slim)){
 }
 
 #endregion
+
+#region filtering out outliers
+df_filtered <- 
+#endregion
