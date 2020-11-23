@@ -10,6 +10,26 @@ ez_graph <- function(loc, df, fun, svg, x="success"){
         write_graph(file_name, fun(df, i, x), svg)
     }
 }
+ez_graph_facet <- function(loc, df, banned) {
+    dir.create(loc)
+    count = 0 
+    for(i in colnames(df)){
+        if(i %in% banned) {
+            next
+        }
+
+        file_name <- paste(loc, '/', 0, count, '_', i, sep='')
+        if (count > 9) {file_name <- paste(loc, '/', count, '_', i, sep='')}
+        print(file_name)
+        count = count + 1
+        tryCatch({
+            write_graph(file_name, gen_cat_scatter_facet(df, "usd_pledged_real", "usd_goal_real", i), svg_gen)
+        }, error = function(e) {
+            print(e)
+            print(paste("failed", file_name, sep = " "))
+        })
+    }
+}
 
 # generate a regression plot
 gen_regression <- function(df, col, x="success") {

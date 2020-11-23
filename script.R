@@ -72,26 +72,9 @@ ez_graph("_categorical_scatter_plots", df_slim, gen_cat_scatter, svg_gen, "succe
 #endregion
 
 #region can facet them 
-
-loc <- "_facet_cat_scatter"
-dir.create(loc)
-count = 0 
-for(i in colnames(df_slim)){
-    if(i == "usd_pledged_real" | i == "usd_goal_real" | i == "success_rating") {next}
-    file_name <- paste(loc, '/', 0, count, '_', i, sep='')
-    if (count > 9) {file_name <- paste(loc, '/', count, '_', i, sep='')}
-    print(file_name)
-    count = count + 1
-    tryCatch({
-        write_graph(file_name, gen_cat_scatter_facet(df_slim, "usd_pledged_real", "usd_goal_real", i), svg_gen)
-    }, error = function(e) {
-        print(e)
-        print(paste("failed", file_name, sep = " "))
-    })
-}
-
+ez_graph_facet("_facet_cat_scatter", df, c("usd_pledged_real", "usd_goal_real", "success_rate", "name", "ID"))
 #endregion
 
 #region filtering out outliers
-df_filtered <- 
+
 #endregion
