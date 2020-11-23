@@ -1,6 +1,5 @@
-#region works
 # denotes weither or not you want to generate svg images (note it is a timely process)
-svg_gen = TRUE
+svg_gen = FALSE # SVGs are two big for even a standard HTML file to display
 
 #region smart loaders to load or download scripts
 
@@ -48,12 +47,12 @@ for (i in c("R_funs/graphs.R", "R_funs/smart_data.R")){
 
 #region configuring the dataframe for regression
 df <- get_data("clean_ks.csv") 
-df <- df %>%
+df_reg <- df %>%
 mutate(usd_pledged_real = usd_pledged_real / 100000) %>%
 mutate(usd_goal_real = usd_goal_real / 100000) %>%
 mutate(success=usd_pledged_real - usd_goal_real)
 
-ez_graph("_regresion_imgs", df, gen_regression, svg_gen)
+ez_graph("_regresion_imgs", df_reg, gen_regression, svg_gen)
 #endregion
 #endregion
 
@@ -72,9 +71,11 @@ ez_graph("_categorical_scatter_plots", df_slim, gen_cat_scatter, svg_gen, "succe
 #endregion
 
 #region can facet them 
-ez_graph_facet("_facet_cat_scatter", df, c("usd_pledged_real", "usd_goal_real", "success_rate", "name", "ID"))
+ez_graph_facet("_facet_cat_scatter", df, c("usd_pledged_real", "usd_goal_real", "success_rate", "name", "ID", "goal", "launched", "pledged", "backers", "usd_pledged"))
 #endregion
 
 #region filtering out outliers
 
 #endregion
+
+system("python combine.py")
