@@ -90,10 +90,10 @@ print("Filtered Outliers")
 # lets try to filter a little, and throw out the useless one
 data_scatter <- data_scatter %>% 
     filter(
-        success_factor > (mean(success_factor) - (sd(success_factor) * 3 ))
+        success_factor > (median(success_factor) - (sd(success_factor) * 3 ))
     ) %>%
     filter(
-        success_factor < (mean(success_factor) + (sd(success_factor) * 3 ))
+        success_factor < (median(success_factor) + (sd(success_factor) * 3 ))
     )
 dir.create("_init_filtered")
 svg(paste("_init_filtered/", "grid", ".svg", sep=""))
@@ -142,10 +142,10 @@ dev.off()
 
 data_hist <- data_hist %>% 
 filter(
-    success_factor > (mean(success_factor) - (sd(success_factor) * 3 ))
+    success_factor > (median(success_factor) - (sd(success_factor) * 3 ))
 ) %>%
 filter(
-    success_factor < (mean(success_factor) + (sd(success_factor) * 3 ))
+    success_factor < (median(success_factor) + (sd(success_factor) * 3 ))
 )
 
 svg(paste("_init_hist/", "grid_rmoutliers", ".svg", sep=""))
@@ -175,9 +175,9 @@ get_tile <- function(df, x, y, fill){
 
 data_heat <- data %>% 
 mutate(success_factor = (usd_pledged_real + 1)/(usd_goal_real + 1)) %>%
-filter(success_factor < mean(success_factor) + (sd(success_factor) * 3)) %>%
-filter(success_factor > mean(success_factor) - (sd(success_factor) * 3)) %>%
-filter(success_factor < 2)
+filter(success_factor < median(success_factor) + (sd(success_factor) * 3)) %>%
+filter(success_factor > median(success_factor) - (sd(success_factor) * 3)) %>% 
+filter(success_factor < 2.5)
 
 dir.create("_heatmap")
 for(i in 2:length(cat_val)){
@@ -189,9 +189,22 @@ for(i in 2:length(cat_val)){
     }
 }
 
-
-
+dir.create("_heatmap_final")
+svg("_heatmap_final/grid1.svg")
+get_tile(data_heat, "main_category", "currency", "success_factor")
+dev.off()
+svg("_heatmap_final/grid2.svg")
+get_tile(data_heat, "main_category", "state", "success_factor")
+dev.off()
+svg("_heatmap_final/grid3.svg")
+get_tile(data_heat, "country", "state", "success_factor")
+dev.off()
+svg("_heatmap_final/grid4.svg")
+get_tile( data_heat, "country", "main_category", "success_factor")
+dev.off()
 #endregion
+
+
 
 #endregion
 
