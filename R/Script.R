@@ -1,3 +1,4 @@
+#region Setup
 #region Libraries
 library(tidyverse)
 library(devtools)
@@ -8,7 +9,7 @@ library(cowplot)
 #endregion
 
 #region loading 
-setwd("~/source/repo/data_final/R")
+setwd("~/source/repo/Data_Final/R")
 data <- read_csv("clean_ks.csv")
 #endregion
 
@@ -29,7 +30,6 @@ colnames(data)
  [9] "pledged"          "state"            "backers"          "country"         
 [13] "usd_pledged"      "usd_pledged_real" "usd_goal_real" 
 '
-#region exploration
 
 #region ColorBlind friendly mode
 
@@ -42,10 +42,14 @@ options(ggplot2.continuous.colour="viridis")
 options(ggplot2.continuous.fill = "viridis")
 #endregion
 
+#endregion
+
+#region exploration
+
 #region 1 Map Maybe?, we'll see
 #endregion
 
-#region 1 Scatter Plot
+#region 1 & 2 Scatter Plot
 get_scatter <- function(df, y){
     print(paste("Generating ", y))
     return(
@@ -74,11 +78,14 @@ for(i in cat_val){
     dev.off()
 }
 
-print("")
-print("")
-print("")
-print("")
-print("")
+print("
+
+
+
+
+
+")
+
 print("Filtered Outliers")
 # lets try to filter a little, and throw out the useless one
 data_scatter <- data_scatter %>% 
@@ -107,7 +114,7 @@ dev.off()
 
 #endregion
 
-#region 2 histogram
+#region 3 histogram
 
 get_histogram <- function(df, col, title=""){
     return(
@@ -151,7 +158,7 @@ dev.off()
 
 #endregion
 
-#region 3 heatmap
+#region 4 heatmap
 
 get_tile <- function(df, x, y, fill){
     return(

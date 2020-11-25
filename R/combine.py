@@ -13,6 +13,6 @@ for i in filtered:
             for j in os.walk(i):
                 for h in j:
                     for e in h:
-                        if ".svg" in e:
+                        if ".svg" in e or ".png" in e:
                             file.write(f'![]({e})\n<br>\n<div style="page-break-after: always;"></div>\n')    
                             html.write(f'<img src="{e}"><br><br>---------------------------------------------------------------------------------------------------------------------------------<br>')
