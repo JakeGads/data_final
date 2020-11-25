@@ -204,7 +204,31 @@ get_tile( data_heat, "country", "main_category", "success_factor")
 dev.off()
 #endregion
 
+# region 5 Swole boy hours
 
+'
+ [1] "ID"               "name"             "category"         "main_category"   
+ [5] "currency"         "deadline"         "goal"             "launched"        
+ [9] "pledged"          "state"            "backers"          "country"         
+[13] "usd_pledged"      "usd_pledged_real" "usd_goal_real" 
+'
+
+get_bubble <- function(df, col){
+    ggplot(data_bubble, aes_string("deadline", "success_factor")) +
+    geom_jitter(aes_string(col=col, size="usd_goal_real")) +
+    geom_smooth(aes_string(col=col), method="lm", se=F)
+}
+
+dir.create("_bubble")
+data_bubble <- data %>% 
+mutate(success_factor = ((usd_pledged_real+1)/(usd_goal_real + 1))) %>%
+filter(success_factor > 2)
+
+for(i in cat_val){
+    svg(paste("_bubble/", i, ".svg", sep=""))
+    print(get_bubble(data_bubble, i))
+    dev.off()
+}
 
 #endregion
 
