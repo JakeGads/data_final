@@ -17,11 +17,6 @@ data <- read_csv("clean_ks.csv")
 source("str.R")
 #endregion
 
-# I'm sorry
-# install.packages(c("cowplot", "googleway", "ggplot2", "ggrepel",  "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata")
-# library("sf")
-
-
 cat_val <- c("category", "main_category", "currency", "state", "country")
 colnames(data)
 '
