@@ -1,6 +1,6 @@
 # Explore | Jake Gadaleta
 
-## Intro
+## 0: Intro
 
 All the starting points will mention what requirements they fill in the title.
 
@@ -58,7 +58,7 @@ I then moved everything out to a grid for easier analysis.
 
 From here we can see the category that the variable with the highest impact is probably the main category.
 
-## The Histogram : (ABE)
+## 3: The Histogram : (ABE)
 
 I really quickly wanted to check that those conclusions that I jumped to in the last section to see if one section might be more popular just because it has more entires than all of the other one. In order to find this I generated the following grid
 
@@ -70,4 +70,31 @@ of course because I wanted to be really really really sure I also took the time 
 
 From these two graphs we can come to the conclusion that the other graphs are good show some good information
 
-## The Heatmap : (ABCE)
+## 4: The Heat Map : (ABCE)
+
+With the heat map I decided to limit the success factor to 2.5, to be clear that means that the project was fully funded and then earned more than that, this number was chosen fairly arbitrarily because it made the pictures look the best, I did generate a heat map matching all for each cross section of categorical data but I've pulled out my favorite ones here
+
+![](_heatmap_final/grid1.png)           
+![](_heatmap_final/grid2.png)
+![](_heatmap_final/grid3.png)
+![](_heatmap_final/grid4.png)
+
+With these heat maps we can see how each categorical variable impacts each other. We can tell that the highest impact variable is definitely the Main Category, and while drilling down it became pretty obvious that if you want to have a successful KickStater the go to is either a video-game or a film/video project.
+
+## 5: Bubble Graph (ACE)
+
+I wanted to try something different with this one
+
+![](_bubble/country.png)
+![](_bubble/currency.png)
+![](_bubble/main_category.png)
+![](_bubble/state.png)
+
+One thing that should be said is that most projects tend to fail, which skewed this data hard, It's also really cool to see that it is very rare for a project to only slightly fail.
+
+## 6: The One that Zooms (AF):
+
+This graph literally just shows that I know how to zoom in
+
+![](label/scat.png)
+![](label/grid.png)

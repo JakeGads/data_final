@@ -109,7 +109,7 @@ dev.off()
 
 #endregion
 
-#region 3 histogram
+#region 3 histogram 
 
 get_histogram <- function(df, col, title=""){
     return(
