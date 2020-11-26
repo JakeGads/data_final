@@ -1,0 +1,1 @@
+get_scatter(data, "usd_pledged_real", "usd_goal_real", "state")
