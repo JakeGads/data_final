@@ -1,15 +1,15 @@
 10 OF
 0.   V   Filter
-1.   N   Sort
+1.   V   Sort
 2.   V   Multiple Measures
 3.   V   Geographic Mapping 
 4.   V   Heat Maps
 5.   V   Table Calculations to Analyze Data
-6.   N   Reference Lines
+6.   V   Reference Lines
 7.   V   Dashboard that combines your views
 8.   N   Include filter and highlight actions, run on hover and/or select
 9.   N   Aggregate dimensions where necessary (ATTR, MAX, MIN, COUNT, COUNTD)
 10.  N   Include a Table Calculation on a table in the view
-11.  N   Add a parameter (dynamic measures) for user control of the data in the view
-12.  N   Histograms with data in bins (ranges of values).
+11.  V   Add a parameter (dynamic measures) for user control of the data in the view
+12.  V   Histograms with data in bins (ranges of values).
 
