@@ -9,7 +9,7 @@
 7.   V   Dashboard that combines your views
 8.   N   Include filter and highlight actions, run on hover and/or select
 9.   N   Aggregate dimensions where necessary (ATTR, MAX, MIN, COUNT, COUNTD)
-10.  N   Include a Table Calculation on a table in the view
+10.  V   Include a Table Calculation on a table in the view
 11.  V   Add a parameter (dynamic measures) for user control of the data in the view
 12.  V   Histograms with data in bins (ranges of values).
 
