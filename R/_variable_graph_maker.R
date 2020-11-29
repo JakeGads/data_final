@@ -21,7 +21,7 @@ for(i in c("str.R", "regression.R", "graphs.R")){
 #endregion
 
 cat_val <- c("category", "main_category", "currency", "state", "country")
-numeric_vals <- c("deadline", "goal", "launched", "pledged", "backers", "usd_pledged", "usd_pledged_real", "usd_goal_real")
+numeric_vals <- c("goal", "pledged", "backers", "usd_pledged", "usd_pledged_real", "usd_goal_real")
 #region ColorBlind friendly mode
 
 library(viridis)
@@ -276,6 +276,8 @@ mutate(success_factor = (usd_pledged_real + 1)/(usd_goal_real + 1)) %>%
 filter(success_factor < median(success_factor) + (sd(success_factor) * 3)) %>%
 filter(success_factor > median(success_factor) - (sd(success_factor) * 3))
 
+dir.create('regression')
+
 for(i in numeric_vals){
 
     new_data <- tibble(
@@ -299,14 +301,36 @@ for(i in numeric_vals){
 
     titles <- c(
         paste(pretty_print("success_factor"), "~", pretty_print(i),  sep = " "),
-        paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared)" sep = " "),
+        paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared)", sep = " "),
         paste("log(", pretty_print("success_factor"), ")~", pretty_print(i),  sep = " ", " "),
-        paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared) +", pretty_print(i), "- 1" sep = " ", " ")
+        paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared) +", pretty_print(i), "- 1", sep = " ", " ")
     )
     
+    for(j in 1:length(loess_model)){
+        gen_model(
+            new_data,
+            linear_model[j],
+            paste("Loess Model:", titles[j], sep=" "),
+            pretty_print(i),
+            pretty_print("success_factor"),
+            pretty_print("regression/", i),
+            TRUE,
+            25
+        )
+    }
 
-    # function(df, regression, regression_formula_str='A regression Model', val1_str="X", val2_str="Y", pdf='', smooth_comp=F, bins=10)
-
+    for(j in 1:length(linear_model)){
+        gen_model(
+            new_data,
+            linear_model[j],
+            paste("Linear Model:", titles[j], sep=" "),
+            pretty_print(i),
+            pretty_print("success_factor"),
+            pretty_print("regression/", i),
+            TRUE,
+            25
+        )
+    }
 }
 
 #endregion
