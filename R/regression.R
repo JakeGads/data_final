@@ -14,6 +14,8 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
         pdf(paste(pdf, ".pdf", sep=""))
     }
 
+    print("assigned PDF")
+
     grid <- df %>%
     data_grid(x) %>%
     add_predictions(regression)
@@ -30,10 +32,12 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
             y = val2_str
         )
     
-    dir.create("pics")
-    png(paste("pics/", pdf, "-", 1, ".png", sep = ""))
+    dir.create("regression_pics")
+    png(paste("regression_pics/", pdf, "-", 1, ".png", sep = ""))
     print(plot1)
     dev.off()
+
+    print("first image")
 
     if(smooth_comp){ # if they want a comparson
         # generate a second fraph with the 2nd point replaced with a smooth
@@ -74,15 +78,15 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
             y = "Count",
             caption=paste("With a bin size of", round(bin,2), sep = " ")
         )
-    dir.create("pics")
-    png(paste("pics/", pdf, "-", 2, ".png", sep = "")) 
+    dir.create("regression_pics")
+    png(paste("regression_pics/", pdf, "-", 2, ".png", sep = "")) 
     print(plot2)
     dev.off()
     
     print( # see last print
        plot2
     )
-    
+    print("second image")
 
     # graphing against the residual
     plot3 <- ggplot(df, aes(x,resid)) +
@@ -96,10 +100,10 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
             y = val2_str
         )
 
-    png(paste("pics/", pdf, "-", 3, ".png", sep=""))
+    png(paste("regression_pics/", pdf, "-", 3, ".png", sep=""))
     print(plot3)
     dev.off()
-
+    
 
     if(smooth_comp){ # including the comparision
         secondary <- ggplot(df, aes(x,resid)) +
@@ -123,6 +127,8 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
     print(
         plot3
     )
+
+    print("third image")
 
     if(pdf != ''){ # if a pdf was selected it will now shutdown the outfile and save it
         dev.off()

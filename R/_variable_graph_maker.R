@@ -1,4 +1,5 @@
 file_type <- c(png, ".png") # swap this if you change the output type
+
 #region Setup
 #region Libraries
 library(tidyverse)
@@ -52,13 +53,6 @@ for(i in cat_val){
     dev.off()
 }
 
-print("
-
-
-
-
-
-")
 
 print("Filtered Outliers")
 # lets try to filter a little, and throw out the useless one
@@ -276,50 +270,51 @@ mutate(success_factor = (usd_pledged_real + 1)/(usd_goal_real + 1)) %>%
 filter(success_factor < median(success_factor) + (sd(success_factor) * 3)) %>%
 filter(success_factor > median(success_factor) - (sd(success_factor) * 3))
 
-dir.create('regression')
+model_data <- model_data[1:500]
 
+dir.create('_regression')
+print("regression")
 for(i in numeric_vals){
-
+    print(i)
     new_data <- tibble(
         x = model_data[[i]],
         y = model_data[["success_factor"]]
     )
-
-    linear_model <- c(
-        lm(y ~ x, new_data),
-        lm(y ~ I(x^2), new_data),
-        lm(log(y) ~ sqrt(x) - 1, new_data),
-        lm(y ~ I(x^2) + x - 1, new_data)
-    )
-
-    loess_model <- c(
-        loess(y ~ x, new_data),
-        loess(y ~ I(x^2), new_data),
-        loess(log(y) ~ sqrt(x) - 1, new_data),
-        loess(y ~ I(x^2) + x - 1, new_data)
-    )
-
+    print("made tibble")
     titles <- c(
         paste(pretty_print("success_factor"), "~", pretty_print(i),  sep = " "),
         paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared)", sep = " "),
         paste("log(", pretty_print("success_factor"), ")~", pretty_print(i),  sep = " ", " "),
         paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared) +", pretty_print(i), "- 1", sep = " ", " ")
     )
-    
-    for(j in 1:length(loess_model)){
+    print("looping loess")
+    for(j in 1:length(c(
+        loess(y ~ x, new_data),
+        loess(y ~ I(x^2), new_data),
+        loess(log(y) ~ sqrt(x) - 1, new_data),
+        loess(y ~ I(x^2) + x - 1, new_data)
+        )
+    )){
+	    print(paste("loess", titles[j]))
         gen_model(
             new_data,
             linear_model[j],
             paste("Loess Model:", titles[j], sep=" "),
             pretty_print(i),
             pretty_print("success_factor"),
-            pretty_print("regression/", i),
+            paste("regression/Loess", pretty_print(i), "x", titles[j]),
             TRUE,
             25
         )
     }
-
-    for(j in 1:length(linear_model)){
+    print("loping linear")
+    for(j in 1:length(c(
+        lm(y ~ x, new_data),
+        lm(y ~ I(x^2), new_data),
+        lm(log(y) ~ sqrt(x) - 1, new_data),
+        lm(y ~ I(x^2) + x - 1, new_data)
+    ))){
+	print(paste("linear", title[j]))
         gen_model(
             new_data,
             linear_model[j],
