@@ -270,7 +270,6 @@ mutate(success_factor = (usd_pledged_real + 1)/(usd_goal_real + 1)) %>%
 filter(success_factor < median(success_factor) + (sd(success_factor) * 3)) %>%
 filter(success_factor > median(success_factor) - (sd(success_factor) * 3))
 
-model_data <- model_data[1:500]
 
 dir.create('_regression')
 print("regression")
@@ -279,7 +278,7 @@ for(i in numeric_vals){
     new_data <- tibble(
         x = model_data[[i]],
         y = model_data[["success_factor"]]
-    )
+    ) %>% na.omit(z,y)
     print("made tibble")
     titles <- c(
         paste(pretty_print("success_factor"), "~", pretty_print(i),  sep = " "),
