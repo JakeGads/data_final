@@ -18,7 +18,8 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
 
     grid <- df %>%
     data_grid(x) %>%
-    add_predictions(regression)
+    add_predictions(regression) %>%
+    na.omit(regression)
 
 
     # create the first plot
