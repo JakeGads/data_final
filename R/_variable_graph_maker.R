@@ -272,6 +272,7 @@ filter(success_factor > median(success_factor) - (sd(success_factor) * 3))
 
 
 dir.create('_regression')
+dir.create('regression')
 print("regression")
 for(i in numeric_vals){
     print(i)
@@ -286,44 +287,50 @@ for(i in numeric_vals){
         paste("log(", pretty_print("success_factor"), ")~", pretty_print(i),  sep = " ", " "),
         paste(pretty_print("success_factor"), "~I(", pretty_print(i), "squared) +", pretty_print(i), "- 1", sep = " ", " ")
     )
-    print("looping loess")
-    for(j in 1:length(c(
-        loess(y ~ x, new_data),
-        loess(y ~ I(x^2), new_data),
-        loess(log(y) ~ sqrt(x) - 1, new_data),
-        loess(y ~ I(x^2) + x - 1, new_data)
-        )
-    )){
-	    print(paste("loess", titles[j]))
-        gen_model(
-            new_data,
-            linear_model[j],
-            paste("Loess Model:", titles[j], sep=" "),
-            pretty_print(i),
-            pretty_print("success_factor"),
-            paste("regression/Loess", pretty_print(i), "x", titles[j]),
-            TRUE,
-            25
-        )
-    }
-    print("loping linear")
-    for(j in 1:length(c(
-        lm(y ~ x, new_data),
-        lm(y ~ I(x^2), new_data),
-        lm(log(y) ~ sqrt(x) - 1, new_data),
-        lm(y ~ I(x^2) + x - 1, new_data)
-    ))){
-	print(paste("linear", title[j]))
-        gen_model(
-            new_data,
-            linear_model[j],
-            paste("Linear Model:", titles[j], sep=" "),
-            pretty_print(i),
-            pretty_print("success_factor"),
-            pretty_print("regression/", i),
-            TRUE,
-            25
-        )
+    tryCatch({
+        print("looping loess")
+        for(j in 1:length(c(
+            loess(y ~ x, new_data),
+            loess(y ~ I(x^2), new_data),
+            loess(log(y) ~ sqrt(x) - 1, new_data),
+            loess(y ~ I(x^2) + x - 1, new_data)
+            )
+        )){
+            print(paste("loess", titles[j]))
+            gen_model(
+                new_data,
+                linear_model[j],
+                paste("Loess Model:", titles[j], sep=" "),
+                pretty_print(i),
+                pretty_print("success_factor"),
+                paste("_regression/Loess", pretty_print(i), "x", titles[j]),
+                TRUE,
+                25
+            )
+        }
+        print("loping linear")
+        for(j in 1:length(c(
+            lm(y ~ x, new_data),
+            lm(y ~ I(x^2), new_data),
+            lm(log(y) ~ sqrt(x) - 1, new_data),
+            lm(y ~ I(x^2) + x - 1, new_data)
+        ))){
+            print(paste("linear", title[j]))
+            gen_model(
+                new_data,
+                linear_model[j],
+                paste("Linear Model:", titles[j], sep=" "),
+                pretty_print(i),
+                pretty_print("success_factor"),
+                pretty_print("_regression/", i),
+                TRUE,
+                25
+            )
+        }
+    }, warning = function(w) {
+        print("oof")
+    }, , error = function(e) {
+        print("oof 2")
     }
 }
 
