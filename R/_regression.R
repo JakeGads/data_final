@@ -8,6 +8,8 @@ library(scales)
 library(cowplot)
 #endregion
 
+options(error = function() traceback(10))
+
 #region loading 
 setwd("~/source/repo/Data_Final/R")
 data <- read_csv("clean_ks.csv")
@@ -39,7 +41,9 @@ options(ggplot2.continuous.fill = "viridis")
 model_data <- data %>% 
 mutate(success_factor = (usd_pledged_real + 1)/(usd_goal_real + 1)) %>%
 filter(success_factor < median(success_factor) + (sd(success_factor) * 3)) %>%
-filter(success_factor > median(success_factor) - (sd(success_factor) * 3))
+filter(success_factor > median(success_factor) - (sd(success_factor) * 3)) %>%
+arrange(name) %>%
+top_n(1000)
 
 
 dir.create('_regression')
@@ -84,26 +88,31 @@ for(i in numeric_vals){
             models[i] <- loess(y ~ I(x^2) + x - 1, new_data)
             i = i + 1
         }, error = function(x) {
-            print("oof")
+            print(x)
         })
 
         for(j in 1:length(models))
         {
+            grid <- new_data %>%
+            data_grid(x) %>%
+            add_predictions(models[j]) %>%
+            na.omit(regression)
             print(paste("loess", titles[j]))
             tryCatch({
                 gen_model(
                     new_data,
+                    grid,
                     models[j],
                     paste("Loess Model:", titles[j], sep=" "),
-                    pretty_print(i),
-                    pretty_print("success_factor"),
-                    paste("_regression/Loess", pretty_print(i), "x", titles[j]),
+                    i,
+                    "success_factor",
+                    paste("_regression/Loess", i, "x", titles[j]),
                     TRUE,
                     25
                 )
             },
             error = function(cond){
-                print("Error Produced")
+                print(cond)
             })
             
         }
@@ -136,26 +145,24 @@ for(i in numeric_vals){
         })
 
         for(j in 1:length(models)){
-            print(paste("linear", title[j]))
+            print(paste("linear", titles[j]))
             tryCatch({
                 gen_model(
                     new_data,
                     models[j],
                     paste("Linear Model:", titles[j], sep=" "),
-                    pretty_print(i),
-                    pretty_print("success_factor"),
-                    pretty_print("_regression/", i),
+                    i,
+                    "success_factor",
+                    paste("_regression/", i, "x", titles[j]),
                     TRUE,
                     25
                 )
             },
             error=function(x) {
-                print("Error Produced")
+                print(x)
             })
             
         }
     
 }
 
-#endregion
-system("python combine.py")

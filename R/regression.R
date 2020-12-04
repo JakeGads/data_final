@@ -8,7 +8,15 @@
 #' @param pdf (string) when set this will save the graphs as that file name
 #' @param smooth_comp (bool) if set to True will add a geom smooth to each approapriate graph in a grid
 #' @export a joined, cleaned and pivioted tibble
-gen_model <- function(df, regression, regression_formula_str='A regression Model', val1_str="X", val2_str="Y", pdf='', smooth_comp=F, bins=10){
+gen_model <- function(df, 
+                      grid,
+                      regression, 
+                      regression_formula_str='A regression Model', 
+                      val1_str="X", 
+                      val2_str="Y", 
+                      pdf='', 
+                      smooth_comp=F, 
+                      bins=10){
     # create the pdf file if a file name was given
     if(pdf != ''){
         pdf(paste(pdf, ".pdf", sep=""))
@@ -16,10 +24,7 @@ gen_model <- function(df, regression, regression_formula_str='A regression Model
 
     print("assigned PDF")
 
-    grid <- df %>%
-    data_grid(x) %>%
-    add_predictions(regression) %>%
-    na.omit(regression)
+    
 
 
     # create the first plot
